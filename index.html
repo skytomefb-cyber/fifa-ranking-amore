@@ -241,6 +241,25 @@ renderTable();
 /* ensure points persist on page unload (redundant but safe) */
 window.addEventListener("beforeunload", () => savePoints(points));
 </script>
+<script>
+fetch("data/data.json")
+  .then(response => response.json())
+  .then(data => {
+    const container = document.createElement("div");
+    container.style.textAlign = "center";
 
+    // urutkan poin tertinggi dulu
+    data.sort((a, b) => b.poin - a.poin);
+
+    data.forEach(item => {
+      const el = document.createElement("p");
+      el.textContent = `${item.negara}: ${item.poin} poin`;
+      container.appendChild(el);
+    });
+
+    document.body.appendChild(container);
+  })
+  .catch(error => console.error("Gagal ambil data:", error));
+</script>
 </body>
 </html>
